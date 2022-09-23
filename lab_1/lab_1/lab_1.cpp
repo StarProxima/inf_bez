@@ -5,20 +5,9 @@
 #include <iostream>
 using namespace std;
 
-string encode(string text, int offset)
+string encrypt(string text, int offset)
 {
 	offset %= 27;
-	
-
-
-
-	
-
-
-	for (int i = 0; i < text.size(); i++)
-	{
-		std::cout << text[i] << "|";
-	}
 
 	string codeStr;
 
@@ -52,28 +41,47 @@ string encode(string text, int offset)
 		}
 	}
 
+	cout << codeStr;
 
-
-	
-
-	std::cout << endl
-		<< codeStr;
-
-	
-
-
-
-	return codeStr ;
+	return codeStr;
 }
 
 int main()
 {
 	ifstream inFile("input.txt");
+
+	string wordCountStr;
+	vector<string> words = vector<string>();
+	inFile >> wordCountStr;
+	int wordCount = stoi(wordCountStr);
+
+
+	for (int i = 0; i < wordCount; i++)
+	{
+		string word;
+		inFile >> word;
+		cout << word << " ";
+		words.push_back(word);
+	}
+
 	string text;
+
+	while (!inFile.eof()) {
+		string str;
+
+		inFile >> str;
+
+		text.append(str + " ");
+	}
+	text.resize(text.size() - 1);
+
+
 	getline(inFile, text);
 
+	cout << endl << text << endl;
 
-	string ans = encode(text, -28);
+
+	string ans = encrypt(text, 1);
 
 	ofstream outFile("output.txt");
 
