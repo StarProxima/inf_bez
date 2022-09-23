@@ -41,7 +41,7 @@ string encrypt(string text, int offset)
 		}
 	}
 
-	cout << codeStr;
+	//cout << codeStr;
 
 	return codeStr;
 }
@@ -76,14 +76,39 @@ int main()
 	text.resize(text.size() - 1);
 
 
+
 	getline(inFile, text);
 
 	cout << endl << text << endl;
 
+	int maxCount = 0;
+	string decryptText;
 
-	string ans = encrypt(text, 1);
+
+	for (int i = 0; i < 27; i++) {
+		string encryptText = encrypt(text, i);
+
+		int count = 0;
+		for (int j = 0; j < words.size(); j++) {
+			//cout << newText << " " << words[j] << " " << newText.find(words[j]) << endl;
+			if (encryptText.find(words[j]) != string::npos) {
+				count++;
+			}
+		}
+
+		cout << endl << encryptText << " " << count;
+
+		if (count >= maxCount) {
+			maxCount = count;
+			decryptText = encryptText;
+		}
+
+	}
+
+	cout << endl << "ANS: " << decryptText;
+
 
 	ofstream outFile("output.txt");
 
-	outFile << ans;
+	outFile << decryptText;
 }
