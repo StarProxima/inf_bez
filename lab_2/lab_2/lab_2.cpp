@@ -42,9 +42,7 @@ int main()
 	bool trueWord = true;
 
 	string ans = "";
-	int i = 0;
-
-
+	
 	do {
 		
 
@@ -84,22 +82,22 @@ int main()
 		
 		if (trueWord) {
 			curNumber++;
-			if (curNumber % 5 == 1) {
+			/*if (curNumber % 5 == 1) {
 				for (int i = 0; i < 5; i++) {
 					std::cout << perm[i * 5] << perm[i * 5 + 1] << perm[i * 5 + 2] << perm[i * 5 + 3] << perm[i * 5 + 4] << " ";
 				}
 				std::cout << curNumber << endl;
-			}
+			}*/
 	
 			if (curNumber == number) {
 				ans = perm;
 				break;
 			}
 		}
-		i++;
+	
 	} while (nextP(perm, 25) );
 
 
-	std::cout << ans << ", iters: " << i << endl;
+	std::cout << ans;
 }
 
