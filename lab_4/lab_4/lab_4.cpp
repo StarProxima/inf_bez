@@ -26,6 +26,18 @@ public:
 };
 
 
+void print(gridValue** grid, int r, int c) {
+
+	for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			char ch = grid[i][j] == space ? ' ' : grid[i][j] == slash ? '/' : grid[i][j] == backslash ? '\\' : '*';
+			cout << ch << ' ';
+		}
+		cout << endl;
+	}
+}
+
+
 gridValue** getGrid(int& r, int& c, int& m, int& n) {
 
 	ifstream inFile = ifstream("safe.in");
@@ -60,18 +72,19 @@ bool isSuccessHack(gridValue** grid, int r, int c, vector<Point>& poses, Point p
 
 	Point newPos = pos;
 
+
 	//cout << "DIR: " << dir.x << " " << dir.y << endl;
 
-	bool b;
+	bool b = newPos.x >= 0 && newPos.x < r&& newPos.y >= 0 && newPos.y < c;
 
-	do { 
+	while(b && grid[newPos.x][newPos.y] == space) {
 		if (grid[newPos.x][newPos.y] == space) {
 			poses.push_back(newPos);
 		}
 		newPos.x += dir.x;
 		newPos.y += dir.y;
 		b = newPos.x >= 0 && newPos.x < r&& newPos.y >= 0 && newPos.y < c;
-	} while ( b && grid[newPos.x][newPos.y] == space);
+	}
 
 
 	if (!b) {
@@ -97,20 +110,13 @@ bool isSuccessHack(gridValue** grid, int r, int c, vector<Point>& poses, Point p
 	}
 	cout << "------" << endl*/;
 
+	newPos.x += newDir.x;
+	newPos.y += newDir.y;
+
 	isSuccessHack(grid, r, c, poses, newPos, newDir);
 
 }
 
-void print(gridValue** grid, int r, int c) {
-
-	for (int i = 0; i < r; i++) {
-		for (int j = 0; j < c; j++) {
-			char ch = grid[i][j] == space ? ' ' : grid[i][j] == slash ? '/' : grid[i][j] == backslash ? '\\' : '*';
-			cout << ch << ' ';
-		}
-		cout << endl;
-	}
-}
 
 int main()
 {
@@ -122,11 +128,54 @@ int main()
 
 	print(grid, r, c);
 
-	cout << isSuccessHack(grid, r, c, poses);
+	//grid[0][0] = slash;
+	 
+	cout << isSuccessHack(grid, r, c, poses) << endl;
 
+	cout << poses.size() << endl;
 
 	for (int i = 0; i < poses.size(); i++) {
 		grid[poses[i].x][poses[i].y] = check;
+	}
+	print(grid, r, c);
+	for (int i = 0; i < poses.size(); i++) {
+		grid[poses[i].x][poses[i].y] = space;
+	}
+	vector<Point> testPoses;
+	vector<Point> ans;
+
+	cout << "POSES COUNT: " << poses.size() << endl;
+	for (int i = 0; i < poses.size(); i++) {
+	
+		bool b = false;
+
+		grid[poses[i].x][poses[i].y] = slash;
+
+		/*print(grid, r, c);
+		cout << "---------------" << endl;*/
+		b = isSuccessHack(grid, r, c, testPoses);
+		if (!b) {
+			grid[poses[i].x][poses[i].y] = backslash;
+
+			/*print(grid, r, c);
+			cout << "---------------" << endl;*/
+			b = isSuccessHack(grid, r, c, testPoses);
+		}
+
+		//cout << poses[i].x << " " << poses[i].y <<  " - " << b << endl;
+
+		if (b) {
+			ans.push_back(poses[i]);
+		}
+		
+		
+		grid[poses[i].x][poses[i].y] = space;
+
+	}
+	cout << "ANS COUNT: " << ans.size() << endl;
+	for (int i = 0; i < ans.size(); i++) {
+		cout << ans[i].x +1<< " " << ans[i].y +1 << endl;
+		grid[ans[i].x][ans[i].y] = check;
 	}
 	cout << endl;
 	print(grid, r, c);
