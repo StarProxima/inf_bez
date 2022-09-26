@@ -129,8 +129,10 @@ int main()
 	print(grid, r, c);
 
 	//grid[0][0] = slash;
+
+	bool firstSuccess = isSuccessHack(grid, r, c, poses);
 	 
-	cout << isSuccessHack(grid, r, c, poses) << endl;
+	cout << firstSuccess << endl;
 
 	cout << poses.size() << endl;
 
@@ -180,7 +182,33 @@ int main()
 	cout << endl;
 	print(grid, r, c);
 
+	ofstream outFile = ofstream("safe.out");
 
+	
+
+	if (firstSuccess) {
+		outFile << "Case 2: 0";
+	}
+	else {
+		if (ans.size() == 0) {
+			outFile << "Case 3: impossible";
+		}
+		else {
+			Point minAns = ans[0];
+
+			for (int i = 0; i < ans.size(); i++) {
+				if (ans[i].x < minAns.x) {
+					minAns = ans[i];
+				}
+				else if (ans[i].x == minAns.x) {
+					if (ans[i].y < minAns.y) {
+						minAns = ans[i];
+					}
+				}
+			}
+			outFile << "Case 1: " << ans.size() << " " << minAns.x + 1 << " " << minAns.y + 1;
+		}
+	}
 
 
 
