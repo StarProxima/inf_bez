@@ -1,20 +1,64 @@
-﻿// lab_3.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
+﻿#include <string>
+#include <vector>
+#include <fstream>
 #include <iostream>
+#include <iomanip>
+#include <algorithm>
+using namespace std;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+bool isPrime(int num) {
+	if (num < 2) return false;
+	for (int i = 2; i < num / 2 + 1; i++) {
+		if (num % i == 0) {
+			return false;
+		}
+	}
+	return true;
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+vector<int> getPrimePos(int num) {
+	vector<int> ans = vector<int>();
+	for (int i = 0; i < num; i++) {
+		if (isPrime(i + 1)) {
+			ans.push_back(i);
+		}
+	}
+	return ans;
+}
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+string decrypt(vector<int> primePos, string word, int count) {
+	string primes = word.substr(0, primePos.size());
+	string str = word.substr(primePos.size(), word.size());
+
+	//cout << primes  << endl << str << endl;
+	for (int i = 0; i < primePos.size(); i++) {
+		str = str.insert(primePos[i], 1, primes[i]);
+	}
+	if (count > 1) {
+		return decrypt(primePos, str, count - 1);
+	}
+
+
+	return str;
+
+	
+}
+
+int main()
+{	
+	int count;
+	string word;
+
+	cin >> count;
+	cin >> word;
+
+
+	vector<int> primesPos = getPrimePos(word.size());
+
+	cout << decrypt(primesPos, word, count) << endl;
+
+	for (int i = 0; i < primesPos.size(); i++) {
+		cout << primesPos[i];
+	}
+}
+
