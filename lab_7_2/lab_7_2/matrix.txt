@@ -1,7 +1,5 @@
+3
 5
-6
-W _ W W W R 
-_ _ R _ W R 
-RW W R _ R W 
-RW RW _ W W W 
-W _ _ _ _ R 
+W W R _ R 
+_ _ _ _ RW 
+R RW RW R _ 
